@@ -14,10 +14,21 @@
 		$format ="format=json";
 		$key = "key=jx6a4hxmgej238dw8x4p8vvc";
 		
-		$finalURL =  $mainURL.$q.$sep.$nd.$sep.$key.$sep.$format;
-		echo $finalURL;
+		$newq = "q=".urlencode($_GET["location"]);
 		
-		$JSONforecast = file_get_contents($finalURL);
+		echo $q;
+		echo ("<br/>");
+		
+		echo $newq;
+		echo ("<br/>");
+		
+		$finalURL =  $mainURL.$q.$sep.$nd.$sep.$key.$sep.$format;
+		$finalURL2 =  $mainURL.$newq.$sep.$nd.$sep.$key.$sep.$format;
+		echo $finalURL2;
+		echo ("<br/>");
+
+		
+		$JSONforecast = file_get_contents($finalURL2);
 		
 		//echo "<hr>";
 		//var_dump($JSONforecast);

@@ -44,7 +44,7 @@
                 "weatherCode": "266",
                 "weatherDesc": [
                     {
-                        "value": "Light drizzle"
+                        "value": "Lighht drizzle"
                     }
                 ],
                 "weatherIconUrl": [
