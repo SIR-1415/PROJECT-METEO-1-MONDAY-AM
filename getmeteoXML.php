@@ -23,7 +23,6 @@
 		echo $newq;
 		echo ("<br/>");
 		
-		$finalURL =  $mainURL.$q.$sep.$nd.$sep.$key.$sep.$format;
 		
 		// well formed URL
 		$finalURL2 =  $mainURL.$newq.$sep.$nd.$sep.$key.$sep.$format;
@@ -31,23 +30,25 @@
 		echo $finalURL2;
 		echo ("<br/>");
 
+		// uncomment for online version
+		//$XMLForecast = file_get_contents($finalURL2);
+		//$PHPXMLForecast = simplexml_load_string($XMLForecast,NULL,LIBXML_NOCDATA);
 		
-		$XMLforecast = file_get_contents($finalURL2);
+		// uncomment for local "trick" version
+		
+				
+		// fix in order to be able to read CDATA
+		
+		$PHPXMLForecast = simplexml_load_file("sample_forecast.xml",NULL,LIBXML_NOCDATA);
 		
 		echo "<hr>";
-		var_dump($XMLforecast);
+		//var_dump($PHPXMLForecast);
 		
+		echo "current temperature is:" . $PHPXMLForecast->current_condition->temp_C ." C";
 		
-		//$PHPforecast = json_decode($JSONforecast);
-		
-		echo "<hr>";
-		//var_dump($PHPforecast);
-		
-		echo "current temperature is:" . $PHPforecast->data->current_condition[0]->temp_C ." C";
-		
-		$actualLocation = $PHPforecast->data->request[0]->query;
-		$iconImage = $PHPforecast->data->current_condition[0]->weatherIconUrl[0]->value;
-		$curTemp = $PHPforecast->data->current_condition[0]->temp_C ." C"
+		$actualLocation = $PHPXMLForecast->request->query;
+		$iconImage = $PHPXMLForecast->current_condition->weatherIconUrl[0];
+		$curTemp = $PHPXMLForecast->current_condition->temp_C ." C"
 		?>
 		
 		<h2>forecast for: <?php echo $actualLocation;?> </h2>
@@ -69,11 +70,11 @@
 				echo "<p> max : ".$forecastArray[$day]->tempMaxC . "</p>";
 			}
 			*/
-			$forecastArray = $PHPforecast->data->weather;
-			foreach($forecastArray as $dayforecast) {
+			$forecastCollection = $PHPXMLForecast->weather;
+			foreach($forecastCollection as $dayforecast) {
 				echo "<h4> date". $dayforecast->date . "</h4>";
-				echo "<h5> ". $dayforecast->weatherDesc[0]->value. "</h5>";
-				echo "<img src=\"".$dayforecast->weatherIconUrl[0]->value."\" />";
+				echo "<h5> ". $dayforecast->weatherDesc[0] ."</h5>";
+				echo "<img src=\"".$dayforecast->weatherIconUrl."\" />";
 				echo "<p> min : ".$dayforecast->tempMinC . "</p>";
 				echo "<p> max : ".$dayforecast->tempMaxC . "</p>";
 			}
